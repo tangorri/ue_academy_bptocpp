@@ -8,24 +8,18 @@ AQuestManager::AQuestManager()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
-	UE_LOG(LogTemp, Warning, TEXT("QuestManager Constructor"));
 }
 
 // Called when the game starts or when spawned
 void AQuestManager::BeginPlay()
 {
 	Super::BeginPlay();
-	
-	UE_LOG(LogTemp, Warning, TEXT("QuestManager BeginPlay"));
 }
 
 // Called every frame
 void AQuestManager::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-	UE_LOG(LogTemp, Warning, TEXT("QuestManager Tick"));
 }
 
 void AQuestManager::CompleteQuest_Implementation(FName QuestId, bool CompleteWholeQuest)
@@ -34,6 +28,7 @@ void AQuestManager::CompleteQuest_Implementation(FName QuestId, bool CompleteWho
 	FQuestInfo Quest = QuestList[QuestIndex];
 	if (CompleteWholeQuest)
 	{
+		UE_LOG(LogTemp, Warning, TEXT("COMPLETED %s"), *Quest.QuestId.ToString())
 		QuestList[QuestIndex].Progress = Quest.ProgressTotal;
 	}
 	else
@@ -49,4 +44,34 @@ FQuestInfo AQuestManager::GetQuest(FName QuestName) const
 	int32 QuestIndex = GetQuestIndex(QuestName);
 	FQuestInfo Quest = QuestList[QuestIndex];
 	return Quest;
+}
+
+bool AQuestManager::IsQuestComplete(FQuestInfo Quest) const
+{
+	return Quest.Progress == Quest.ProgressTotal;
+}
+
+TArray<FQuestInfo> AQuestManager::GetQuests() const
+{
+	return QuestList;
+}
+
+int32 AQuestManager::GetQuestIndex(FName QuestId) const
+{
+	for (auto i = 0; i < QuestList.Num(); i++)
+	{
+		if (QuestList[i].QuestId == QuestId) { return i; }
+	}
+	UE_LOG(LogTemp, Warning, TEXT("QuestId not found ! no index !"))
+	return -1;
+}
+
+bool AQuestManager::IsActiveIndex(int32 Index) const
+{
+	for (auto i = 0; i < QuestList.Num(); ++i)
+	{
+		if (i == Index) return true;
+		else if (IsQuestComplete(QuestList[Index]) == false) return false;
+	}
+	return false;
 }

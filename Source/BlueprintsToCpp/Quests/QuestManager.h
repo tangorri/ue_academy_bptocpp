@@ -27,14 +27,23 @@ public:
 	UFUNCTION(BlueprintPure, BlueprintImplementableEvent)
 	bool IsActiveQuest(FName QuestId) const;
 
+	UFUNCTION(BlueprintPure)
+	bool IsQuestComplete(FQuestInfo Quest) const;
+
+	UFUNCTION(BlueprintPure)
+	TArray<FQuestInfo> GetQuests() const;
+
 	UPROPERTY(BlueprintAssignable, BlueprintCallable)
 	FCompletedQuestSignature CompletedQuest;
+
+	UFUNCTION(BlueprintPure)
+	bool IsActiveIndex(int32 Index) const;
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	UFUNCTION(BlueprintPure, BlueprintImplementableEvent)
+	UFUNCTION(BlueprintPure)
 	int32 GetQuestIndex(FName QuestId) const;
 
 public:	
