@@ -24,6 +24,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void Release();
 
+	bool TraceForPhysicsBodies(AActor*& HitActor, UPrimitiveComponent*& HitComponent);
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
@@ -39,18 +41,17 @@ protected:
 
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
 	void NotifyQuestActor(AActor* Actor);
-
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	bool TraceForPhysicsBodies(AActor*& HitActor, UPrimitiveComponent*& HitComponent);
-
 public:	
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	float MaxGrabDistance = 100;
+	float MaxGrabDistance = 100.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	float HoldDistance = 100;
+	float HoldDistance = 100.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float GrabRadius = 50.f;
 };

@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "Camera/CameraComponent.h"
 #include "../Grabber.h"
 #include "FirstPersonCharacter.generated.h"
 
@@ -20,8 +21,11 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	UFUNCTION(BlueprintImplementableEvent, BlueprintPure)
-	UGrabber* GetGrabber() const;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	UGrabber* Grabber;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	UCameraComponent* Camera;
 
 public:	
 	// Called every frame

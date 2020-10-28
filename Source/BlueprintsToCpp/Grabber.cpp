@@ -2,7 +2,10 @@
 
 
 #include "Grabber.h"
-#include "Kismet/KismetMathLibrary.h"
+//#include "Kismet/KismetMathLibrary.h"
+#include "Engine/EngineTypes.h"
+#include "Kismet/KismetSystemLibrary.h"
+
 #include "GameFramework/Actor.h"
 
 // Sets default values for this component's properties
@@ -30,8 +33,7 @@ void UGrabber::BeginPlay()
 void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-	UE_LOG(LogTemp, Warning, TEXT("Grabber TickComponent"));
+	GetPhysicsComponent()->SetTargetLocationAndRotation(GetHoldLocation(), GetComponentRotation());
 }
 
 FVector UGrabber::GetMaxGrabLocation() const
@@ -47,11 +49,6 @@ FVector UGrabber::GetHoldLocation() const
 UPhysicsHandleComponent* UGrabber::GetPhysicsComponent() const
 {
 	return GetOwner()->FindComponentByClass<UPhysicsHandleComponent>();
-}
-
-bool UGrabber::TraceForPhysicsBodies_Implementation(AActor*& HitActor, UPrimitiveComponent*& HitComponent)
-{
-	return false;
 }
 
 void UGrabber::Grab()
@@ -71,4 +68,31 @@ void UGrabber::Grab()
 void UGrabber::Release()
 {
 	GetPhysicsComponent()->ReleaseComponent();
+}
+
+bool UGrabber::TraceForPhysicsBodies(AActor*& HitActor, UPrimitiveComponent*& HitComponent)
+{
+	UE_LOG(LogTemp, Warning, TEXT("Trace for Physics Bodies called"))
+	//return false;
+
+	//UWorld* World = GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull);
+	static FName SweepTestForGabbableName = TEXT("SweepTestForGabbable");
+	FCollisionQueryParams collQueryParams(SweepTestForGabbableName, false, GetOwner());
+	FHitResult OutHit;
+	FCollisionObjectQueryParams CollObjQueryParams(ECC_PhysicsBody);
+	UWorld* CurrentWorld = GetWorld();
+
+	bool const bHit = CurrentWorld ? CurrentWorld->SweepSingleByObjectType(
+		OutHit, GetComponentLocation(), GetMaxGrabLocation(), 
+		FQuat::Identity, CollObjQueryParams, FCollisionShape::MakeSphere(GrabRadius), collQueryParams
+	) : false;
+
+	HitActor = OutHit.GetActor();
+	HitComponent = OutHit.GetComponent();
+
+//#if ENABLE_DRAW_DEBUG
+	// DrawDebugSphereTraceSingle(World, Start, End, Radius, DrawDebugType, bHit, OutHit, TraceColor, TraceHitColor, DrawTime);
+//#endif
+
+	return bHit;
 }
