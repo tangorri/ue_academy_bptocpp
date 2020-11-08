@@ -39,7 +39,6 @@ protected:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	UPhysicsHandleComponent* GetPhysicsComponent() const;
 
-	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
 	void NotifyQuestActor(AActor* Actor);
 public:	
 	// Called every frame

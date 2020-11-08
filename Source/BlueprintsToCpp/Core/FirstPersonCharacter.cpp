@@ -48,7 +48,6 @@ void AFirstPersonCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInp
 
 void AFirstPersonCharacter::MoveForward(float AxisValue)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Characteur Move Forward %f"), AxisValue)
 	GetCharacterMovement()->AddInputVector(GetActorForwardVector() * AxisValue);
 }
 
@@ -59,7 +58,6 @@ void AFirstPersonCharacter::MoveRight(float AxisValue)
 
 void AFirstPersonCharacter::Grab()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Character want to grap"))
 	Grabber->Grab();
 }
 

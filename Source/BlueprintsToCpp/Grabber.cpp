@@ -51,6 +51,11 @@ UPhysicsHandleComponent* UGrabber::GetPhysicsComponent() const
 	return GetOwner()->FindComponentByClass<UPhysicsHandleComponent>();
 }
 
+void UGrabber::NotifyQuestActor(AActor* Actor)
+{
+	//Actor->GetComponentByClass<>
+}
+
 void UGrabber::Grab()
 {
 	AActor* HitActor;
@@ -72,10 +77,7 @@ void UGrabber::Release()
 
 bool UGrabber::TraceForPhysicsBodies(AActor*& HitActor, UPrimitiveComponent*& HitComponent)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Trace for Physics Bodies called"))
-	//return false;
-
-	//UWorld* World = GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull);
+	//UE_LOG(LogTemp, Warning, TEXT("Trace for Physics Bodies called"))
 	static FName SweepTestForGabbableName = TEXT("SweepTestForGabbable");
 	FCollisionQueryParams collQueryParams(SweepTestForGabbableName, false, GetOwner());
 	FHitResult OutHit;
@@ -96,3 +98,8 @@ bool UGrabber::TraceForPhysicsBodies(AActor*& HitActor, UPrimitiveComponent*& Hi
 
 	return bHit;
 }
+
+//void UGrabber::NotifyQuestActor_Implementation(AActor* Actor)
+//{
+//	UE_LOG(LogTemp, Warning, TEXT("NotifyQuestActor native called"))
+//}
