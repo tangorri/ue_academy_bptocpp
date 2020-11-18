@@ -15,12 +15,13 @@ class BLUEPRINTSTOCPP_API AMainGameMode : public AGameModeBase
 {
 	GENERATED_BODY()
 
+	AMainGameMode(const FObjectInitializer& ObjectInitializer);
+
 public:
-
-	//virtual void BeginPlay() override;
-
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, BlueprintPure)
 	AQuestManager* GetQuestManager();
 protected:
 	AQuestManager* QuestManager;
+
+	TSubclassOf<class AQuestManager> QuestManagerClass;
 };
