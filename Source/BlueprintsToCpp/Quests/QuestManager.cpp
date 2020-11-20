@@ -49,6 +49,11 @@ bool AQuestManager::IsQuestComplete(FQuestInfo Quest) const
 	return Quest.Progress == Quest.ProgressTotal;
 }
 
+bool AQuestManager::IsActiveQuest(FName QuestId) const
+{
+	return IsActiveIndex(GetQuestIndex(QuestId));
+}
+
 TArray<FQuestInfo> AQuestManager::GetQuests() const
 {
 	return QuestList;
@@ -69,7 +74,7 @@ bool AQuestManager::IsActiveIndex(int32 Index) const
 	for (auto i = 0; i < QuestList.Num(); ++i)
 	{
 		if (i == Index) return true;
-		else if (IsQuestComplete(QuestList[Index]) == false) return false;
+		else if (IsQuestComplete(QuestList[Index]) == false) return true;
 	}
 	return false;
 }

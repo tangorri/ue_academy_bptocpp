@@ -18,8 +18,8 @@ AQuestMarker::AQuestMarker()
 
 void AQuestMarker::BeginPlay()
 {
-	//GetQuestManager()->CompletedQuest.AddDynamic(this, &AQuestMarker::QuestUpdate);
-	//RefreshVisibility();
+	GetQuestManager()->CompletedQuest.AddDynamic(this, &AQuestMarker::QuestUpdate);
+	RefreshVisibility();
 }
 
 void AQuestMarker::RefreshVisibility()
