@@ -23,15 +23,17 @@ void AQuestManager::Tick(float DeltaTime)
 void AQuestManager::CompleteQuest_Implementation(FName QuestId, bool CompleteWholeQuest)
 {
 	int32 QuestIndex = GetQuestIndex(QuestId);
-	FQuestInfo Quest = QuestList[QuestIndex];
+	FQuestInfo& Quest = QuestList[QuestIndex];
 	if (CompleteWholeQuest)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("COMPLETED %s"), *Quest.QuestId.ToString())
-		QuestList[QuestIndex].Progress = Quest.ProgressTotal;
+		//QuestList[QuestIndex].Progress = Quest.ProgressTotal;
+		Quest.Progress = Quest.ProgressTotal;
 	}
 	else
 	{
-		QuestList[QuestIndex].Progress = FMath::Min(Quest.Progress + 1, Quest.ProgressTotal);
+		//QuestList[QuestIndex].Progress = FMath::Min(Quest.Progress + 1, Quest.ProgressTotal);
+		Quest.Progress = FMath::Min(Quest.Progress + 1, Quest.ProgressTotal);
 	}
 
 	CompletedQuest.Broadcast(QuestIndex);
@@ -63,7 +65,9 @@ int32 AQuestManager::GetQuestIndex(FName QuestId) const
 {
 	for (auto i = 0; i < QuestList.Num(); i++)
 	{
-		if (QuestList[i].QuestId == QuestId) { return i; }
+		if (QuestList[i].QuestId == QuestId) { 
+			return i; 
+		}
 	}
 	UE_LOG(LogTemp, Warning, TEXT("QuestId not found ! no index !"))
 	return -1;
@@ -71,10 +75,15 @@ int32 AQuestManager::GetQuestIndex(FName QuestId) const
 
 bool AQuestManager::IsActiveIndex(int32 Index) const
 {
-	for (auto i = 0; i < QuestList.Num(); ++i)
+	for (auto i = 0; i < QuestList.Num(); i++)
 	{
-		if (i == Index) return true;
-		else if (IsQuestComplete(QuestList[Index]) == false) return true;
+		if (i == Index) {
+			return true;
+		}
+		else if (IsQuestComplete(QuestList[i]) == false)
+		{
+			return false;
+		}
 	}
 	return false;
 }
