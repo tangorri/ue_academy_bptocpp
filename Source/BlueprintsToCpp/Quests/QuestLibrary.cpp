@@ -6,6 +6,8 @@
 
 AQuestManager* UQuestLibrary::GetQuestManager(UObject* WorldContext)
 {
+	// UE_LOG(LogTemp, Warning, NULL, TEXT("MODIFIED"))
+	UE_LOG(LogTemp, Warning, TEXT("UQuestLibrary::GetQuesteManager code rollback"))
 	if (WorldContext == nullptr) return nullptr;
 	UWorld* World = WorldContext->GetWorld();
 	if (World == nullptr) return nullptr;
